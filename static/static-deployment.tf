@@ -1,7 +1,7 @@
 resource "kubernetes_deployment" "nginx_static" {
   metadata {
     name = "nginx-static"
-    namespace = kubernetes_namespace.main_namespace.metadata.0.name
+    namespace = var.namespace
     labels = {
       app = "nginx-static"
     }

@@ -1,7 +1,7 @@
-resource "kubernetes_ingress_v1" "static_ingress" {
+resource "kubernetes_ingress_v1" "ingress" {
   metadata {
     name = "static-ingress"
-    namespace = kubernetes_namespace.main_namespace.metadata.0.name
+    namespace = var.namespace
     annotations = {
       "nginx.ingress.kubernetes.io/rewrite-target" = "/$2"
     }
@@ -18,11 +18,30 @@ resource "kubernetes_ingress_v1" "static_ingress" {
       http {
         path {
           path = "/static(/|$)(.*)"  # Все запросы по пути /static/ будут направляться на сервис NGINX
+          path_type = "Prefix"
           backend {
             service {
-              name = kubernetes_service.nginx_static_service.metadata[0].name
+              name = "nginx-static-service"
               port {
-                number = kubernetes_service.nginx_static_service.spec[0].port[0].port
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+
+    rule {
+      host = var.main_host
+      http {
+        path {
+          path = "/(.*)"
+          path_type = "Prefix"
+          backend {
+            service {
+              name = "api-gateway-service"
+              port {
+                number = 80
               }
             }
           }
