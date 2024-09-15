@@ -1,7 +1,7 @@
 resource "kubernetes_service" "nginx_static_service" {
   metadata {
     name = "nginx-static-service"
-    namespace = var.namespace
+    namespace = kubernetes_namespace.main_namespace.metadata.0.name
   }
 
   spec {

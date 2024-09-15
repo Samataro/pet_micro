@@ -1,7 +1,7 @@
 resource "kubernetes_ingress_v1" "static_ingress" {
   metadata {
     name = "static-ingress"
-    namespace = var.namespace
+    namespace = kubernetes_namespace.main_namespace.metadata.0.name
     annotations = {
       "nginx.ingress.kubernetes.io/rewrite-target" = "/"
     }

@@ -1,0 +1,1 @@
+Если получаем connection reset, нужно активировать `minikube addons enable ingress`
